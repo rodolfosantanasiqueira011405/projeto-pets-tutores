@@ -53,7 +53,9 @@ export function PetsPage() {
 
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {s.data?.content?.map((pet) => (
-            <PetCard key={pet.id} pet={pet} />
+            <PetCard key={pet.id} pet={pet} 
+              onDelete={(id) => petsStore.deletePet(id)} 
+              isDeleting={s.loading}/>
           ))}
         </div>
 

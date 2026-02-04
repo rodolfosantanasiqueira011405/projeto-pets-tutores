@@ -53,5 +53,8 @@ export const petsFacade = {
     return res.data;
   },  
   
+  async remove(id: number) {
+      await http.delete(`/v1/pets/${id}`);
+    },
 
 };
