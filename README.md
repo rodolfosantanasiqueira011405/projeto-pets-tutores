@@ -1,73 +1,95 @@
-# React + TypeScript + Vite
+# 🐾 Pet Manager - Sistema de Gestão de Pets e Tutores
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este projeto é uma Single Page Application (SPA) desenvolvida para o gerenciamento de pets e seus respectivos tutores. A aplicação permite o cadastro, listagem, edição e exclusão de registros, consumindo uma API REST externa.
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+#🏛️ Arquitetura Reativa (RxJS + Facade)
 
-## React Compiler
+O grande diferencial técnico deste projeto é a implementação da Arquitetura Reativa. Em vez de gerenciar estados complexos apenas com useState, utilizei o Pattern Facade aliado ao RxJS:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+BehaviorSubjects: Utilizados para manter o estado atual da aplicação de forma imutável e acessível por múltiplos componentes.
 
-## Expanding the ESLint configuration
+Encapsulamento: Os componentes React não conhecem a implementação da API ou a lógica de negócio; eles apenas assinam fluxos de dados (Observables) expostos pelas Facades.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Desacoplamento: Facilita a manutenção e permite que a lógica de estado seja testada de forma independente da interface.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+# 🚀 Tecnologias Utilizadas
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+O projeto foi construído utilizando as seguintes tecnologias:
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+* **React 19** (Vite)
+* **TypeScript**
+* **RxJS** (Para gerenciamento de estado e fluxos de dados)
+* **Tailwind CSS** (Estilização)
+* **Axios** (Consumo de API)
+* **Docker & Docker Compose** (Containerização)
+* **Vitest** (Testes unitários)
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+
+# 📂 Organização do Projeto
+A estrutura de pastas foi planejada seguindo princípios de Clean Architecture e S.O.L.I.D., separando responsabilidades de forma clara:
+
+Plaintext
+src/
+├── @types/             # Definições de tipos globais e extensões de interfaces
+├── app/
+│   ├── core/           # O "Cérebro" da aplicação
+│   │   ├── services/   # Comunicação direta com a API (Axios/Observables)
+│   │   ├── facades/    # Camada de abstração que une lógica e estado (Pattern Facade)
+│   │   ├── models/     # Interfaces e Types das entidades de negócio
+│   │   └── state/      # Gerenciamento de estado reativo com RxJS
+│   │
+│   ├── shared/         # Tudo que é reutilizável no app
+│   │   ├── components/ # UI Components (Botões, Modais, Cards)
+│   │   ├── pipes/      # Formatadores de dados (Data, Moeda, CPF)
+│   │   ├── hooks/      # Hooks customizados para lógica React
+│   │   └── validators/ # Lógica de validação de formulários
+│   │
+│   └── features/       # Módulos por domínio de negócio
+│       ├── auth/       # Login, Logout e Recuperação de senha
+│       ├── pets/       # Listagem, Cadastro e Edição de Pets
+│       └── tutores/    # Listagem, Cadastro e Edição de Tutores
+│
+├── assets/             # Imagens, ícones e fontes
+├── styles/             # Configurações globais do Tailwind e CSS base
+├── environments/      # Configurações para diferentes ambientes (Dev/Prod)
+└── main.tsx            # Ponto de entrada e configuração de rotas
+
+
+# 🐳 Infraestrutura e DevOps
+O projeto está pronto para produção utilizando as melhores práticas de containerização:
+
+Dockerfile: Dividido em dois estágios:
+
+build: Compila o código TypeScript e gera os assets otimizados via Vite.
+
+production: Utiliza uma imagem leve do Nginx Stable Alpine para servir os arquivos, garantindo segurança e baixo consumo de recursos.
+
+Docker Compose: Orquestra o container da aplicação mapeando as portas e variáveis de ambiente necessárias.
+
+
+# 🛠️ Guia de Execução do Projeto 
+
+Este projeto foi totalmente containerizado. Siga os passos abaixo para subir o ambiente.
+
+	1. Pré-requisitos
+		Certifique-se de ter instalado em sua máquina:		
+			* Git;
+			* Docker (versão 20.10+);
+			* Docker Compose (versão 2.0+);
+
+	2. Passo a Passo
+		1. Clonar o repositório:
+			git clone https://github.com/rodolfosantanasiqueira011405/projeto-pets-tutores.git
+			cd projeto-pets-tutores
+			
+		2. Subir o container: Não é necessário instalar o Node.js ou dependências localmente. O Docker cuidará de todo o processo de build e configuração do servidor Nginx.
+			docker-compose up -d --build
+		
+		Obs: O parâmetro --build garante que o Docker compile a versão mais recente do código React antes de subir o servidor.
+
+	3. Acessar a aplicação: Assim que o comando terminar, abra o seu navegador em: 👉 http://localhost:8080
+
