@@ -1,4 +1,4 @@
-# 🐾 Pet Manager - Sistema de Gestão de Pets e Tutores
+# 🐾 Pet Manager - Sistema de Gestão de Pets e Tutores 
 
 Este projeto é uma Single Page Application (SPA) desenvolvida para o gerenciamento de pets e seus respectivos tutores. A aplicação permite o cadastro, listagem, edição e exclusão de registros, consumindo uma API REST externa.
 
@@ -16,7 +16,7 @@ Desacoplamento: Facilita a manutenção e permite que a lógica de estado seja t
 
 # 🚀 Tecnologias Utilizadas
 
-O projeto foi construído utilizando as seguintes tecnologias:
+O projeto foi construído utilizando as seguintes tecnologias front-end:
 
 * **React 19** (Vite)
 * **TypeScript**
@@ -27,6 +27,17 @@ O projeto foi construído utilizando as seguintes tecnologias:
 * **Vitest** (Testes unitários)
 
 ---
+
+
+# 🧪 Testes Unitários (Considerações Técnicas)
+Embora o Vitest esteja configurado no projeto, os testes unitários da camada de lógica e Facades não foram implementados integralmente nesta entrega devido aos seguintes fatores:
+
+Complexidade do Fluxo Assíncrono: A arquitetura baseada em RxJS exige a criação de mocks complexos para os BehaviorSubjects e o controle preciso do ciclo de vida dos Observables (subscrição/dessubscrição) dentro do ambiente de teste.
+
+Curva de Implementação: O esforço necessário para garantir a cobertura de testes na camada core (facades e state) demandaria um tempo superior ao cronograma disponível, priorizando-se assim a entrega da infraestrutura Docker e as funcionalidades core da SPA.
+
+Abordagem Futura: Para uma próxima iteração, planeja-se o uso do TestScheduler do RxJS para testar os fluxos de dados de forma determinística.
+
 
 
 # 📂 Organização do Projeto
@@ -86,8 +97,9 @@ Este projeto foi totalmente containerizado. Siga os passos abaixo para subir o a
 			git clone https://github.com/rodolfosantanasiqueira011405/projeto-pets-tutores.git
 			cd projeto-pets-tutores
 			
-		2. Subir o container: Não é necessário instalar o Node.js ou dependências localmente. O Docker cuidará de todo o processo de build e configuração do servidor Nginx.
+		2. Subir o container: Não é necessário instalar o Node.js ou dependências localmente. O Docker cuidará de todo o processo de build e configuração do servidor Nginx. Rodar o comando abaixo:
 			docker-compose up -d --build
+		
 		
 		Obs: O parâmetro --build garante que o Docker compile a versão mais recente do código React antes de subir o servidor.
 
